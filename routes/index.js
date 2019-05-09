@@ -1,25 +1,41 @@
-var express = require('express');
-var router = express.Router();
-var MongoClient = require('mongodb').MongoClient
-var url = 'mongodb://localhost:27017/blog'
+let mongoose = require("mongoose");
+let express = require('express');
+let User = require('../models/user');
+let Tests = require('../models/tests');
+let router = express.Router();
+let url = 'mongodb://localhost:27017/blog'
 /* GET home page. */
-router.get('/', function (req, res, next) {
-    MongoClient.connect(url, function (err, client) {
-        if (err) throw err
-        var db = client.db('blog')
-        db.collection('user').find().toArray(function (err, result) {
-            if (err) throw err
-            res.send(result);
-            // db.close();
-        })
-    })
+
+router.get('/list', function (req, res, next) {
+    mongoose.connect(url, function (err) {
+        Tests.find(function (err, docs) {
+            if (err) {
+                console.log('查询出错：' + err);
+            } else {
+                console.log('{}查询结果为：', docs);
+                res.send(docs)
+            }
+        });
+    });
 });
 router.post('/add', function (req, res, next) {
-    MongoClient.connect(url, function (err, client) {
-        if (err) throw err
-        var db = client.db('blog')
-        console.log(req.body)
-        db.collection('user').insertOne(req.body)
-    })
+    let TestEntity = new TestModel({
+        name: "helloworld",
+        code: 28,
+        phone: "helloworld@qq.com",
+        loginName: "helloworld@qq.com",
+        password: "helloworld@qq.com"
+    });
+    TestEntity.save(function (error, doc) {
+        if (error) {
+            console.log("error :" + error);
+        } else {
+            console.log(doc);
+        }
+    });
+    db.on('error', console.error.bind(console, 'connection error:'));
+    db.once('open', function () {
+        // we're connected!
+    });
 });
 module.exports = router;
