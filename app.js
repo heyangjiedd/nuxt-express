@@ -6,7 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
+var crawler = require('./plugin/crawler/index')
 var app = express();
 app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");//项目上线后改成页面的地址
@@ -19,6 +19,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 app.use(logger('dev'));
+app.use(crawler);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
