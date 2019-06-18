@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer');
-const url= 'https://news.dmzj.com/donghuaqingbao'
+const url= 'https://news.dmzj.com/manhuazhoubian'
 const crawler = async (req,res,next)=>{
     const brower = await puppeteer.launch({
         headless:true,
@@ -19,6 +19,7 @@ const crawler = async (req,res,next)=>{
     });
     console.log(result)
     await brower.close();
+    res.aaa = result
     next();
 }
 
